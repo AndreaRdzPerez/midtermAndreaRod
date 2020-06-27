@@ -48,6 +48,12 @@ public class Money implements Transactional {
         return this.amount;
     }
 
+    public Money increaseAmountMoney(BigDecimal addAmount) {
+        setAmount(this.amount.add(addAmount));
+        Money newAmount = new Money(this.amount);
+        return newAmount;
+    }
+
     public Money multiplyAmount(BigDecimal addAmount) {
         setAmount(this.amount.multiply(addAmount));
         Money newAmount = new Money(this.amount);
@@ -63,6 +69,25 @@ public class Money implements Transactional {
         setAmount(this.amount.subtract(addAmount));
         return this.amount;
     }
+
+    public Money decreaseAmountMoney(BigDecimal addAmount) {
+        setAmount(this.amount.subtract(addAmount));
+        Money newAmount = new Money(this.amount);
+        return newAmount;
+    }
+
+    public boolean isMoreThan(BigDecimal addAmount) {
+        int compare;
+        compare = this.amount.compareTo(addAmount);
+        if(compare == 1) {
+           return true;
+       }else if(compare == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public Currency getCurrency() {
         return this.currency;
     }

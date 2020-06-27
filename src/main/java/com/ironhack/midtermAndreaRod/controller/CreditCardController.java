@@ -16,7 +16,7 @@ public class CreditCardController {
     @Autowired
     CreditCardService creditCardService;
 
-    @PostMapping("/creditCard/create")
+    @PostMapping("/creditcard/create")
     @ResponseStatus(HttpStatus.CREATED)
     public CreditCard creditCard(@Validated @RequestBody CreditCard creditCard) {
         return creditCardService.save(creditCard);

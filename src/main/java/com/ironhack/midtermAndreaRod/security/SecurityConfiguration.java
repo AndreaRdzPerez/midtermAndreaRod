@@ -4,6 +4,7 @@ import com.ironhack.midtermAndreaRod.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,8 +40,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         httpSecurity.authorizeRequests()
                 .mvcMatchers("/loggedin").authenticated()
-                //.mvcMatchers("/roles").hasAuthority("ROLE_TECHNICIAN")
-                //.mvcMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/account/{id}").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.GET, "/account/debit/{id}/{amount}").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/account/credit/{id}/{amount}").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/account/transference/{name}/{id}/{amount}").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.POST, "/savings/create").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/savings/balance/{id}").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.POST, "/creditcard/create").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/creditcard/balance/{id}").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.POST, "/checking/create").hasAnyAuthority("ROLE_ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/checkings").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.GET, "/checking/balance/{id}").hasAnyAuthority("ROLE_ACCOUNTHOLDER")
                 .anyRequest().permitAll();
 
     }

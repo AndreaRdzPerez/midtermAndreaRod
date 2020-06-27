@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Entity
 @PrimaryKeyJoinColumn(name = "accountId")
 public class CreditCard extends Account {
+    protected String secretKey;
     @DecimalMax(value = "1000.0", inclusive = true)
     @DecimalMin(value = "100.0", inclusive = true)
     protected BigDecimal creditLimit;

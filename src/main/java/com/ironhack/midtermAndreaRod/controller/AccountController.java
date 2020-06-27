@@ -1,5 +1,6 @@
 package com.ironhack.midtermAndreaRod.controller;
 
+import com.ironhack.midtermAndreaRod.dto.Transference;
 import com.ironhack.midtermAndreaRod.model.*;
 import com.ironhack.midtermAndreaRod.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account findById(@PathVariable Integer id){ return accountService.findById(id); }
 
-
     @PatchMapping("/account/debit/{id}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void debitById(@PathVariable Integer id, Integer amount){ accountService.debitById(id, amount); }
@@ -26,9 +26,9 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void creditById(@PathVariable Integer id, Integer amount){ accountService.creditById(id, amount); }
 
-    @PatchMapping("/account/transference/{name}/{id}/{amount}")
+    @PostMapping("/account/transference")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void transference(@PathVariable String name, Integer id, Integer amount){ accountService.transference(name, id, amount); }
+    public void makeTransference(@RequestBody Transference transference) throws Exception { accountService.makeTransference(transference); }
 
     //3rd party debit
     @PatchMapping("/debit/{hashed_key}/{id}/{account_secret_key}/{amount}")

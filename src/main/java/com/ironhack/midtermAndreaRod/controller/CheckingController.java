@@ -23,7 +23,7 @@ public class CheckingController {
         return checkingService.save(checking);
     }
 
-    @GetMapping("/checkings}")
+    @GetMapping("/checkings")
     @ResponseStatus(HttpStatus.OK)
     public List<Checking> findAll(){ return checkingService.findAll(); }
 
