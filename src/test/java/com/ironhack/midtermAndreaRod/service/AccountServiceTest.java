@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,8 +69,8 @@ class AccountServiceTest {
 
     @Test
     void findById_correct() {
-        Account account = accountService.findById(2);
-        assertEquals(2, account.getId());
+        Optional<Account> account = accountService.findById(1);
+        assertEquals(1, account.get().getId());
     }
 
     @Test

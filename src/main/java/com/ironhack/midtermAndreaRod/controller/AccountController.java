@@ -5,8 +5,9 @@ import com.ironhack.midtermAndreaRod.model.*;
 import com.ironhack.midtermAndreaRod.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class AccountController {
@@ -16,7 +17,7 @@ public class AccountController {
 
     @GetMapping("/account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Account findById(@PathVariable Integer id){ return accountService.findById(id); }
+    public Optional<Account> findById(@PathVariable Integer id){ return accountService.findById(id); }
 
     @PatchMapping("/account/debit/{id}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

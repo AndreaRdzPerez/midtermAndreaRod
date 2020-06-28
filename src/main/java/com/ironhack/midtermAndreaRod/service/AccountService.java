@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -22,28 +23,36 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Account findById(Integer id) {
-        return accountRepository.findById(id).orElseThrow(() -> new IdNotFoundException("There is no Account with this " + id));
+    public Optional<Account> findById(Integer id) {
+        LOGGER.info("[INIT] - findById");
+        if(accountRepository.findById(id) != null){
+            LOGGER.info("[END] - findById");
+            return accountRepository.findById(id);
+        }else{
+            LOGGER.error("Account not found");
+            throw new IdNotFoundException("There is no Account with this ID: " + id);
+        }
+        //return accountRepository.findById(id).orElseThrow(() -> new IdNotFoundException("There is no Account with this ID: " + id));
     }
 
     public void debitById(Integer id, Integer amount) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new IdNotFoundException("There is no Account with this " + id));
-        LOGGER.info("[INIT] - debitById");
-        Money amountMoney = new Money(BigDecimal.valueOf(amount));
-        LOGGER.info("Debit the amount specified to the account");
-        account.setBalance(account.getBalance().decreaseAmount(amountMoney));
-        LOGGER.info("[END] - debitById");
-        accountRepository.save(account);
+            LOGGER.info("[INIT] - debitById");
+            Optional<Account> account = accountRepository.findById(id);
+            Money amountMoney = new Money(BigDecimal.valueOf(amount));
+            LOGGER.info("Debit the amount specified to the account");
+            account.get().setBalance(account.get().getBalance().decreaseAmount(amountMoney));
+            LOGGER.info("[END] - debitById");
+            accountRepository.save(account.get());
     }
 
     public void creditById(Integer id, Integer amount) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new IdNotFoundException("There is no Account with this " + id));
+        Optional<Account> account = accountRepository.findById(id);
         LOGGER.info("[INIT] - creditById");
         Money amountMoney = new Money(BigDecimal.valueOf(amount));
         LOGGER.info("Credit the amount specified to the account");
-        account.setBalance(account.getBalance().decreaseAmount(amountMoney));
+        account.get().setBalance(account.get().getBalance().decreaseAmount(amountMoney));
         LOGGER.info("[END] - creditById");
-        accountRepository.save(account);
+        accountRepository.save(account.get());
     }
 
     @Transactional
