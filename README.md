@@ -26,3 +26,4 @@ CREATE SCHEMA midterm
 * Spring - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * MySQLWorkbench
+* Log4j2 - Logs management
