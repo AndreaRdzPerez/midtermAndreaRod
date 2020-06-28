@@ -1,5 +1,7 @@
 package com.ironhack.midtermAndreaRod.controller;
 
+import com.ironhack.midtermAndreaRod.dto.ThirdPartyCredit;
+import com.ironhack.midtermAndreaRod.dto.ThirdPartyDebit;
 import com.ironhack.midtermAndreaRod.dto.Transference;
 import com.ironhack.midtermAndreaRod.model.*;
 import com.ironhack.midtermAndreaRod.service.AccountService;
@@ -17,7 +19,7 @@ public class AccountController {
 
     @GetMapping("/account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Account> findById(@PathVariable Integer id){ return accountService.findById(id); }
+    public Account findById(@PathVariable Integer id){ return accountService.findById(id); }
 
     @PatchMapping("/account/debit/{id}/{amount}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -32,16 +34,15 @@ public class AccountController {
     public void makeTransference(@RequestBody Transference transference) throws Exception { accountService.makeTransference(transference); }
 
     //3rd party debit
-    @PatchMapping("/debit/{hashed_key}/{id}/{account_secret_key}/{amount}")
+    @PostMapping("/debit/third_party_debit/{hashedKey}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void thirdPartyDebit(@PathVariable String hashedKey, Integer id, String account_secret_key, Integer amount){ accountService.thirdPartyDebit(hashedKey, id, account_secret_key, amount); }
+    public void thirdPartyDebit(@PathVariable String hashedKey, @RequestBody ThirdPartyDebit thirdPartyDebit){ accountService.thirdPartyDebit(hashedKey, thirdPartyDebit); }
 
     //3rd party credit
-    /* @PatchMapping("/debit/{hashed_key}/{id}/{account_secret_key/{amount}")
+    @PostMapping("/debit/third_party_credit/{hashedKey}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void thirdPartyCredit(@PathVariable String hashedKey, Integer id, String account_secret_key, Integer amount){ checkingService.thirdPartyCredit(hashedKey, id, account_secret_key, amount); }
+    public void thirdPartyCredit(@PathVariable String hashedKey, @RequestBody ThirdPartyCredit thirdPartyCredit){ accountService.thirdPartyCredit(hashedKey, thirdPartyCredit); }
 
-     */
 
 
 }

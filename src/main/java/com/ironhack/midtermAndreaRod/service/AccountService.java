@@ -1,10 +1,14 @@
 package com.ironhack.midtermAndreaRod.service;
 
+import com.ironhack.midtermAndreaRod.dto.ThirdPartyCredit;
+import com.ironhack.midtermAndreaRod.dto.ThirdPartyDebit;
 import com.ironhack.midtermAndreaRod.dto.Transference;
 import com.ironhack.midtermAndreaRod.exceptions.IdNotFoundException;
+import com.ironhack.midtermAndreaRod.exceptions.NotValidDataException;
 import com.ironhack.midtermAndreaRod.model.Account;
 import com.ironhack.midtermAndreaRod.model.Money;
 import com.ironhack.midtermAndreaRod.repository.AccountRepository;
+import com.ironhack.midtermAndreaRod.repository.ThirdPartyRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +27,14 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Optional<Account> findById(Integer id) {
+    @Autowired
+    private ThirdPartyRepository thirdPartyRepository;
+
+    public Account findById(Integer id) {
         LOGGER.info("[INIT] - findById");
         if(accountRepository.findById(id) != null){
             LOGGER.info("[END] - findById");
-            return accountRepository.findById(id);
+            return accountRepository.findById(id).orElseGet(null);
         }else{
             LOGGER.error("Account not found");
             throw new IdNotFoundException("There is no Account with this ID: " + id);
@@ -74,11 +81,58 @@ public class AccountService {
         LOGGER.info("[END] - creditById");
     }
 
-    public void thirdPartyDebit(String hashedKey, Integer id, String account_secret_key, Integer amount) {
+    @Transactional
+    public void thirdPartyDebit(String hashedKey, ThirdPartyDebit thirdPartyDebit) {
+        //verify thirdparty User exist
+        if(hashedKey == thirdPartyRepository.findByHashedKey(hashedKey).getHashedKey()) {
+            LOGGER.info("[INIT] - thirdPartyDebit");
+            //find by ID
+            Account debitAccount = accountRepository.findById(thirdPartyDebit.getAccountId()).orElseThrow(() -> new RuntimeException("Account not found"));
+            //verify the secretKey Account matches
+            LOGGER.info("Verifying the account details are correct");
+            if(thirdPartyDebit.getSecretKey() == debitAccount.getSecretKey()){
+                //debit the amount
+                Money amountMoney = new Money(BigDecimal.valueOf(thirdPartyDebit.getAmount()));
+                LOGGER.info("Debit the amount specified of the account");
+                debitAccount.setBalance(debitAccount.getBalance().decreaseAmount(amountMoney));
+                LOGGER.info("[END] - creditById");
+                accountRepository.save(debitAccount);
+            }else{
+                //error for not matching
+                LOGGER.error("Introduced SecretKey is not valid");
+                throw new NotValidDataException("Introduced SecretKey is not valid");
+            }
+        }else{
+            LOGGER.error("The ThirdParty User was not found.");
+            throw new IdNotFoundException("The ThirdParty User was not found.");
+        }
     }
 
+    @Transactional
+    public void thirdPartyCredit(String hashedKey, ThirdPartyCredit thirdPartyCredit) {
+        //verify thirdparty User exist
+        if(hashedKey == thirdPartyRepository.findByHashedKey(hashedKey).getHashedKey()) {
+            LOGGER.info("[INIT] - thirdPartyDebit");
+            //find by ID
+            Account debitAccount = accountRepository.findById(thirdPartyCredit.getAccountId()).orElseThrow(() -> new RuntimeException("Account not found"));
+            //verify the secretKey Account matches
+            LOGGER.info("Verifying the account details are correct");
+            if(thirdPartyCredit.getSecretKey() == debitAccount.getSecretKey()){
+                //debit the amount
+                Money amountMoney = new Money(BigDecimal.valueOf(thirdPartyCredit.getAmount()));
+                LOGGER.info("Debit the amount specified of the account");
+                debitAccount.setBalance(debitAccount.getBalance().increaseAmount(amountMoney));
+                LOGGER.info("[END] - creditById");
+                accountRepository.save(debitAccount);
+            }else{
+                //error for not matching
+                LOGGER.error("Introduced SecretKey is not valid");
+                throw new NotValidDataException("Introduced SecretKey is not valid");
+            }
+        }else{
+            LOGGER.error("The ThirdParty User was not found.");
+            throw new IdNotFoundException("The ThirdParty User was not found.");
+        }
+    }
+    }
 
-
-    // public void thirdPartyCredit(String hashedKey, Integer id, String account_secret_key, Integer amount) {
-    //}
-}

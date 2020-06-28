@@ -17,11 +17,11 @@ public class ThirdParty extends User{
         this.hashedKey = hashedKey;
     }
 
-    public String getKey() {
+    public String getHashedKey() {
         return hashedKey;
     }
 
-    public void setKey(String hashedKey) {
+    public void setHashedKey(String hashedKey) {
         this.hashedKey = hashedKey;
     }
 }

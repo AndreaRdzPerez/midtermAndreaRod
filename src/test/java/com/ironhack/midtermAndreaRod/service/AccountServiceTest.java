@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +20,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class AccountServiceTest {
 
     @Autowired
@@ -52,7 +52,7 @@ class AccountServiceTest {
         s.setBalance(new Money(BigDecimal.valueOf(2000.00)));
         s.setId(1);
         //checking account test
-        c = new Checking(new Money(BigDecimal.valueOf(2000.00)), ah1, ah2, "secret1" );
+        c = new Checking(new Money(BigDecimal.valueOf(2000.00)), ah1, ah2);
         c.setId(2);
         //transference
         t = new Transference();
@@ -69,8 +69,8 @@ class AccountServiceTest {
 
     @Test
     void findById_correct() {
-        Optional<Account> account = accountService.findById(1);
-        assertEquals(1, account.get().getId());
+        Account account = accountService.findById(1);
+        assertEquals(1, account.getId());
     }
 
     @Test

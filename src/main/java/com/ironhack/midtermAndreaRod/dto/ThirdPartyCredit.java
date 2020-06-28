@@ -1,13 +1,11 @@
 package com.ironhack.midtermAndreaRod.dto;
 
-import java.math.BigDecimal;
-
-public class ThirdPartyDebit {
+public class ThirdPartyCredit {
     private Integer accountId;
     private String secretKey;
     private double amount;
 
-    public ThirdPartyDebit() {
+    public ThirdPartyCredit() {
     }
 
     public Integer getAccountId() {

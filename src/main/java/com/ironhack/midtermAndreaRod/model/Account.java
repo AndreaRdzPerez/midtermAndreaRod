@@ -18,6 +18,7 @@ public class Account {
     protected AccountHolder primaryOwner;
     @ManyToOne()
     protected AccountHolder secondaryOwner;
+    protected String secretKey;
     protected BigDecimal penaltyFee;
     protected Status status;
     protected LocalDate lastAccessedDate;
@@ -32,6 +33,15 @@ public class Account {
     }
 
     //Getters & setters
+
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     public Integer getId() {
         return id;

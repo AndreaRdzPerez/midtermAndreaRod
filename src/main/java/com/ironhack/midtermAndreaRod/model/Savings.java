@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Entity
 @PrimaryKeyJoinColumn(name = "accountId")
 public class Savings extends Account{
-    protected String secretKey;
     @DecimalMax(value = "0.5", inclusive = true)
     protected BigDecimal interestRate;
     @DecimalMax(value = "1000.0", inclusive = true)
@@ -20,7 +19,6 @@ public class Savings extends Account{
     //Empty constructor
     public Savings() {
     }
-
 
 
     //Constructor with default values
