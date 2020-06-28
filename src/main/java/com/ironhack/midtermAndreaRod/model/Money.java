@@ -54,7 +54,10 @@ public class Money implements Transactional {
         return newAmount;
     }
 
-    public Money multiplyAmount(BigDecimal addAmount) {
+    public Money multiplyAmount(BigDecimal percentage) {
+        //hardcoding to add a 1 to make sure the percentage will be added
+        BigDecimal addAmount = percentage.add(BigDecimal.valueOf(1));
+        //multiplying
         setAmount(this.amount.multiply(addAmount));
         Money newAmount = new Money(this.amount);
         return newAmount;

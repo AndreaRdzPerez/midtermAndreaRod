@@ -22,12 +22,18 @@ public class AccountHolder extends User{
     private Address mailingAddress;
     @JsonIgnore
     @OneToMany(mappedBy="primaryOwner", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
-    private List<Checking> primaryOwner = new ArrayList<>();
+    private List<Account> primaryOwner = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy="secondaryOwner", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
-    private List<Checking> secondaryOwner = new ArrayList<>();
+    private List<Account> secondaryOwner = new ArrayList<>();
 
     public AccountHolder() {
+    }
+
+    public AccountHolder(Long id, String username, String name, LocalDate dateOfBirth) {
+        super(id, username);
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public AccountHolder(Long id, String username, String password, Set<Role> roles, String name, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
@@ -38,19 +44,20 @@ public class AccountHolder extends User{
         this.mailingAddress = mailingAddress;
     }
 
-    public List<Checking> getPrimaryOwner() {
+
+    public List<Account> getPrimaryOwner() {
         return primaryOwner;
     }
 
-    public void setPrimaryOwner(List<Checking> primaryOwner) {
+    public void setPrimaryOwner(List<Account> primaryOwner) {
         this.primaryOwner = primaryOwner;
     }
 
-    public List<Checking> getSecondaryOwner() {
+    public List<Account> getSecondaryOwner() {
         return secondaryOwner;
     }
 
-    public void setSecondaryOwner(List<Checking> secondaryOwner) {
+    public void setSecondaryOwner(List<Account> secondaryOwner) {
         this.secondaryOwner = secondaryOwner;
     }
 

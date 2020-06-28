@@ -3,16 +3,19 @@ package com.ironhack.midtermAndreaRod.dto;
 import java.math.BigDecimal;
 
 public class Transference {
-    private Integer senderAccountHolderId;
+    private Long senderAccountHolderId;
     private Integer accountSenderId;
     private Integer accountReceiverId;
     private BigDecimal amount;
 
-    public Integer getSenderAccountHolderId() {
+    public Transference() {
+    }
+
+    public Long getSenderAccountHolderId() {
         return senderAccountHolderId;
     }
 
-    public void setSenderAccountHolderId(Integer senderAccountHolderId) {
+    public void setSenderAccountHolderId(Long senderAccountHolderId) {
         this.senderAccountHolderId = senderAccountHolderId;
     }
 
