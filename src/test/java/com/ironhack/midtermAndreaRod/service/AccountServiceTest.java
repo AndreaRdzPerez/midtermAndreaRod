@@ -75,10 +75,14 @@ class AccountServiceTest {
 
     @Test
     void debitById() {
+        accountService.debitById(1, 5);
+        assertFalse(s.getBalance().isMoreThan(BigDecimal.valueOf(2000.00)));
     }
 
     @Test
     void creditById() {
+        accountService.creditById(1,5);
+        assertTrue(s.getBalance().isMoreThan(BigDecimal.valueOf(2000.00)));
     }
 
     @Test
@@ -89,5 +93,9 @@ class AccountServiceTest {
 
     @Test
     void thirdPartyDebit() {
+    }
+
+    @Test
+    void thirdPartyCredit() {
     }
 }
