@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "accountHolderId")
-
 public class Role {
 
     @Id

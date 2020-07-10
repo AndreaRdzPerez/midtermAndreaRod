@@ -1,5 +1,6 @@
 package com.ironhack.midtermAndreaRod.service;
 
+import com.ironhack.midtermAndreaRod.dto.ThirdPartyDebit;
 import com.ironhack.midtermAndreaRod.dto.Transference;
 import com.ironhack.midtermAndreaRod.model.*;
 import org.apache.tomcat.jni.Local;
@@ -32,6 +33,7 @@ class AccountServiceTest {
     private Checking c;
     private AccountHolder ah1;
     private AccountHolder ah2;
+    private ThirdPartyDebit tpd;
 
     @BeforeEach
     void setUp() {
@@ -60,6 +62,10 @@ class AccountServiceTest {
         t.setAccountReceiverId(s.getId());
         t.setAccountSenderId(c.getId());
         t.setAmount(BigDecimal.valueOf(20));
+        //thirdPartyDebit
+        tpd = new ThirdPartyDebit();
+        
+
 
     }
 
